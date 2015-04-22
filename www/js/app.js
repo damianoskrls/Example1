@@ -10,7 +10,7 @@
 (function(){
   'use strict';
  
-  var app = angular.module('app', ['onsen', 'angular-images-loaded', 'ngMap']);
+  var app = angular.module('app', ['onsen', 'angular-images-loaded', 'ngMap', 'angular-carousel']);
 
   // Filter to convert HTML content to string by removing all HTML tags
   app.filter('htmlToPlaintext', function() {
@@ -297,6 +297,48 @@
 
   });
 
+  app.controller('bookingController', function($scope, $compile, $filter){
+
+    $scope.bookdate = 'Pick Reservation Date';
+    $scope.booktime = 'Pick Reservation Time';
+
+    $scope.chooseDate = function(){
+      
+      var options = {
+        date: new Date(),
+        mode: 'date'
+      };
+
+      datePicker.show(options, function(date){
+        
+        var day   = date.getDate();
+          var month   = date.getMonth() + 1;
+          var year  = date.getFullYear();
+
+          $scope.$apply(function(){
+            $scope.bookdate = $filter('date')(date, 'MMMM d, yyyy');      
+          });
+
+      });
+
+    }
+
+    $scope.chooseTime = function(){
+      
+      var options = {
+        date: new Date(),
+        mode: 'time'
+      };
+
+      datePicker.show(options, function(time){
+          $scope.$apply(function(){
+            $scope.booktime = $filter('date')(time, 'hh:mm a');
+          });
+      });
+
+    }
+
+  });
 
   // Plugins Controller
 
